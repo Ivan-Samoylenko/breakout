@@ -1,10 +1,7 @@
 import {
   Wrapper,
   DirectionController,
-  TopBtn,
-  RightBtn,
-  BottomBtn,
-  LeftBtn,
+  DirectionBtn,
   ServiceButtons,
   ServiceBtn,
   ActionBtn,
@@ -14,10 +11,10 @@ export default function Controller() {
   return (
     <Wrapper>
       <DirectionController>
-        <TopBtn type="button"></TopBtn>
-        <RightBtn type="button"></RightBtn>
-        <BottomBtn type="button"></BottomBtn>
-        <LeftBtn type="button"></LeftBtn>
+        <DirectionBtn type="button" name="top"></DirectionBtn>
+        <DirectionBtn type="button" name="right"></DirectionBtn>
+        <DirectionBtn type="button" name="bottom"></DirectionBtn>
+        <DirectionBtn type="button" name="left"></DirectionBtn>
       </DirectionController>
       <ServiceButtons>
         <ServiceBtn type="button"></ServiceBtn>

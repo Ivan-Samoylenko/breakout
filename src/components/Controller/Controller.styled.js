@@ -18,51 +18,67 @@ export const DirectionController = styled.div`
   background-color: ${(p) => p.theme.color.body};
 
   border-radius: 50%;
-  box-shadow: ${(p) => p.theme.shadows.button};
+  box-shadow: ${(p) => p.theme.shadows.direction};
 `;
 
-const DirectionBtn = styled.button`
-  border: none;
+export const DirectionBtn = styled.button`
+  border-width: 3px;
+  border-style: solid;
+  border-top-color: ${(p) => p.theme.color.shadow.darker};
+  border-right-color: ${(p) => p.theme.color.shadow.light};
+  border-bottom-color: ${(p) => p.theme.color.shadow.lighter};
+  border-left-color: ${(p) => p.theme.color.shadow.dark};
   padding: 0;
 
   position: absolute;
 
+  background: linear-gradient(
+    ${(p) => getGradientAngle(p)},
+    transparent,
+    rgba(0, 0, 0, 0.3)
+  );
   background-color: #555;
 
-  box-shadow: ${(p) => p.theme.shadows.button};
+  border-radius: 3px;
+  ${(p) => {
+    switch (p.name) {
+      case "top":
+        return "width: 30px; height: 40px; top: 5px; left: 50px;";
+      case "right":
+        return "width: 40px; height: 30px; top: 50px; left: 85px;";
+      case "bottom":
+        return "width: 30px; height: 40px; top: 85px; left: 50px;";
+      case "left":
+        return "width: 40px; height: 30px; top: 50px; left: 5px;";
+      default:
+        return "";
+    }
+  }};
+
+  &:active {
+    border-top-color: ${(p) => p.theme.color.activeShadow.lighter};
+    border-right-color: ${(p) => p.theme.color.activeShadow.dark};
+    border-bottom-color: ${(p) => p.theme.color.activeShadow.darker};
+    border-left-color: ${(p) => p.theme.color.activeShadow.light};
+    background-color: #d62;
+    box-shadow: ${(p) => p.theme.shadows.activeButton};
+  }
 `;
 
-export const TopBtn = styled(DirectionBtn)`
-  width: 30px;
-  height: 40px;
-
-  top: 5px;
-  left: 50px;
-`;
-
-export const RightBtn = styled(DirectionBtn)`
-  width: 40px;
-  height: 30px;
-
-  top: 50px;
-  left: 85px;
-`;
-
-export const BottomBtn = styled(DirectionBtn)`
-  width: 30px;
-  height: 40px;
-
-  top: 85px;
-  left: 50px;
-`;
-
-export const LeftBtn = styled(DirectionBtn)`
-  width: 40px;
-  height: 30px;
-
-  top: 50px;
-  left: 5px;
-`;
+function getGradientAngle(p) {
+  switch (p.name) {
+    case "top":
+      return "180deg";
+    case "right":
+      return "270deg";
+    case "bottom":
+      return "0";
+    case "left":
+      return "90deg";
+    default:
+      return "0";
+  }
+}
 
 export const ServiceButtons = styled.div`
   display: flex;
@@ -70,15 +86,28 @@ export const ServiceButtons = styled.div`
 `;
 
 export const ServiceBtn = styled.button`
-  width: 30px;
-  height: 8px;
-  border: none;
+  width: 35px;
+  height: 11px;
+  border-width: 3px;
+  border-style: solid;
+  border-top-color: ${(p) => p.theme.color.shadow.darker};
+  border-right-color: ${(p) => p.theme.color.shadow.light};
+  border-bottom-color: ${(p) => p.theme.color.shadow.lighter};
+  border-left-color: ${(p) => p.theme.color.shadow.dark};
   padding: 0;
 
   background-color: #555;
 
   border-radius: 4px;
-  box-shadow: ${(p) => p.theme.shadows.button};
+
+  &:active {
+    border-top-color: ${(p) => p.theme.color.activeShadow.lighter};
+    border-right-color: ${(p) => p.theme.color.activeShadow.dark};
+    border-bottom-color: ${(p) => p.theme.color.activeShadow.darker};
+    border-left-color: ${(p) => p.theme.color.activeShadow.light};
+    background-color: #d62;
+    box-shadow: ${(p) => p.theme.shadows.activeButton};
+  }
 `;
 
 export const ActionBtn = styled.button`
@@ -91,4 +120,9 @@ export const ActionBtn = styled.button`
 
   border-radius: 50%;
   box-shadow: ${(p) => p.theme.shadows.button};
+
+  &:active {
+    background-color: #d62;
+    box-shadow: ${(p) => p.theme.shadows.activeButton};
+  }
 `;
