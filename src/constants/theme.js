@@ -1,7 +1,10 @@
 export const theme = {
   color: {
+    black: "#222222",
+    activeBlack: "#840",
     body: "#444444",
     screen: "#aaccaa",
+    button: "#555555",
     shadow: {
       light: "#666666",
       lighter: "#888888",
@@ -22,7 +25,10 @@ export const theme = {
       "-4px 0 2px 0 #333333, 4px 0 2px 0 #666666, 0 4px 2px 0 #888888,  0 -4px 2px 0 #222222, inset 0 0 35px 5px #333333",
     button: "inset -2px -2px 10px 0 #888888, inset 4px 4px 25px 0 #222222",
     activeButton:
-      "inset -2px -2px 10px 0 #842, inset 4px 4px 25px 0 #f84, 0 0 5px 2px #f84",
+      "inset -2px -2px 10px 0 #a40, inset 4px 4px 25px 0 #f84, 0 0 5px 2px #f84",
+    hoverButton: "0 0 5px 2px #f84",
+    hoverActionButton:
+      "inset -2px -2px 10px 0 #888888, inset 4px 4px 25px 0 #222222, 0 0 5px 2px #f84",
   },
-  transition: "250ms linear",
+  transition: "transition-duration: 150ms; transition-timing-function: linear",
 };

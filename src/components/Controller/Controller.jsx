@@ -11,10 +11,18 @@ export default function Controller() {
   return (
     <Wrapper>
       <DirectionController>
-        <DirectionBtn type="button" name="top"></DirectionBtn>
-        <DirectionBtn type="button" name="right"></DirectionBtn>
-        <DirectionBtn type="button" name="bottom"></DirectionBtn>
-        <DirectionBtn type="button" name="left"></DirectionBtn>
+        <DirectionBtn type="button" name="top">
+          ↑
+        </DirectionBtn>
+        <DirectionBtn type="button" name="right">
+          →
+        </DirectionBtn>
+        <DirectionBtn type="button" name="bottom">
+          ↓
+        </DirectionBtn>
+        <DirectionBtn type="button" name="left">
+          ←
+        </DirectionBtn>
       </DirectionController>
       <ServiceButtons>
         <ServiceBtn type="button"></ServiceBtn>
