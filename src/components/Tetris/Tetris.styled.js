@@ -15,8 +15,8 @@ export const Case = styled.main`
 `;
 
 export const Screen = styled.div`
-  width: 320px;
-  height: 240px;
+  width: 336px;
+  height: 256px;
   margin-right: auto;
   margin-left: auto;
   border-width: 8px;
