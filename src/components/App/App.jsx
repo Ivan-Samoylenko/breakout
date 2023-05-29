@@ -1,10 +1,10 @@
-import { Tetris } from "components/Tetris";
-import { Canvas } from "components/Canvas";
+import { Canvas, Sprites } from "components";
 
 export default function App() {
   return (
-    <Tetris>
+    <>
       <Canvas />
-    </Tetris>
+      <Sprites />
+    </>
   );
 }

@@ -1,28 +1,11 @@
-import { Screen } from "./Canvas.styled";
-import { useRef, useEffect } from "react";
-import {
-  getRefs,
-  startDrawing,
-  endDrawing,
-  getMoveHandlers,
-  addPaddleMoving,
-  removePaddleMoving,
-} from "drawing";
+import { useEffect } from "react";
+import { StyledCanvas } from "./Canvas.styled";
+import { breakout } from "game";
 
 export default function Canvas() {
-  const canvasEl = useRef();
-
   useEffect(() => {
-    const refs = getRefs(canvasEl);
-
-    startDrawing(refs);
-    addPaddleMoving(getMoveHandlers(refs));
-
-    return () => {
-      endDrawing();
-      removePaddleMoving(getMoveHandlers(refs));
-    };
+    breakout();
   }, []);
 
-  return <Screen ref={canvasEl} width="320" height="240"></Screen>;
+  return <StyledCanvas id="canvas" />;
 }
