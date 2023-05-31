@@ -36,4 +36,8 @@ export class Platform {
       this.height
     );
   }
+
+  reset() {
+    this.x = (this.game.width - this.width) / 2;
+  }
 }

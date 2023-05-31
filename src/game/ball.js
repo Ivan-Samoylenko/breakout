@@ -1,3 +1,10 @@
+const direction = {
+  toLeftTop: 0,
+  toRightTop: 1,
+  toRightDown: 2,
+  toLeftDown: 3,
+};
+
 export class Ball {
   constructor(game) {
     this.game = game;
@@ -5,9 +12,17 @@ export class Ball {
     this.height = 40;
     this.x = (this.game.width - this.width) / 2;
     this.y = this.game.height - this.game.platform.height - this.height;
-    this.maxSpeed = 10;
-    this.dx = this.maxSpeed;
-    this.dy = -this.maxSpeed;
+    this.maxSpeed = 12;
+    // angle can be from 5 to 85
+    this.angle = 45;
+    // direction can be 0, 1, 2 or 3
+    this.direction = direction.toRightTop;
+    this.dx =
+      -Math.cos((this.angle + this.direction * 90) * (Math.PI / 180)) *
+      this.maxSpeed;
+    this.dy =
+      -Math.sin((this.angle + this.direction * 90) * (Math.PI / 180)) *
+      this.maxSpeed;
     this.image = document.getElementById("ball");
     this.frameX = 0;
     this.maxFrame = 14;
@@ -37,17 +52,35 @@ export class Ball {
     }
 
     // collision with screen borders
-    if (this.x > this.game.width - this.width) {
+    if (this.x >= this.game.width - this.width) {
       this.x = this.game.width - this.width;
-      this.dx = -this.maxSpeed;
+      if (this.direction === direction.toRightTop) {
+        this.direction = direction.toLeftTop;
+      } else if (this.direction === direction.toRightDown) {
+        this.direction = direction.toLeftDown;
+      }
+      this.angle = 90 - this.angle;
+      this.getVector();
     }
-    if (this.x < 0) {
+    if (this.x <= 0) {
       this.x = 0;
-      this.dx = this.maxSpeed;
+      if (this.direction === direction.toLeftTop) {
+        this.direction = direction.toRightTop;
+      } else if (this.direction === direction.toLeftDown) {
+        this.direction = direction.toRightDown;
+      }
+      this.angle = 90 - this.angle;
+      this.getVector();
     }
-    if (this.y < 0) {
+    if (this.y <= 0) {
       this.y = 0;
-      this.dy = this.maxSpeed;
+      if (this.direction === direction.toLeftTop) {
+        this.direction = direction.toLeftDown;
+      } else if (this.direction === direction.toRightTop) {
+        this.direction = direction.toRightDown;
+      }
+      this.angle = 90 - this.angle;
+      this.getVector();
     }
     // collision with top border of platform
     if (
@@ -57,15 +90,40 @@ export class Ball {
       this.x < this.game.platform.x + this.game.platform.width + this.width
     ) {
       this.y = this.game.platform.y - this.height;
-      this.dy = -this.maxSpeed;
+
       if (
-        this.x <
-        this.game.platform.x + (this.game.platform.width - this.width) / 2
+        this.x + this.width / 2 <=
+        this.game.platform.x + this.game.platform.width / 2
       ) {
-        this.dx = -this.maxSpeed;
-      } else {
-        this.dx = this.maxSpeed;
+        if (this.x + this.width / 2 - this.game.platform.x < 5) this.angle = 5;
+        else if (this.x + this.width / 2 - this.game.platform.x > 125)
+          this.angle = 85;
+        else
+          this.angle = Math.floor(
+            (85 / 130) * (this.x + this.width / 2 - this.game.platform.x)
+          );
+
+        this.direction = direction.toLeftTop;
+      } else if (
+        this.x + this.width / 2 >
+        this.game.platform.x + this.game.platform.width / 2
+      ) {
+        if (this.x + this.width / 2 - this.game.platform.x < 135)
+          this.angle = 5;
+        else if (this.x + this.width / 2 - this.game.platform.x > 255)
+          this.angle = 85;
+        else
+          this.angle = Math.floor(
+            (85 / 130) *
+              (this.x +
+                this.width / 2 -
+                this.game.platform.x -
+                this.game.platform.width / 2)
+          );
+
+        this.direction = direction.toRightTop;
       }
+      this.getVector();
     }
     // collision with left and right borders of platform
     // constants
@@ -79,24 +137,39 @@ export class Ball {
       this.y > this.game.platform.y - this.height &&
       this.y < this.game.platform.y + this.game.platform.height + this.height;
     // logic
-    if (
-      (isBallFliesToPlatformOnTheLeft || isBallFliesToPlatformOnTheRight) &&
-      isBallOnTheHeightOfPlatform
-    ) {
-      isBallFliesToPlatformOnTheLeft
-        ? (this.x = this.game.platform.x - this.width)
-        : (this.x = this.game.platform.x);
-      this.dx = -this.maxSpeed;
+    if (isBallFliesToPlatformOnTheLeft && isBallOnTheHeightOfPlatform) {
+      this.x = this.game.platform.x - this.width;
 
       const ballTouchTopHalfOfPlatformHeight =
         this.y + this.height <
         this.game.platform.y + this.game.platform.height / 2;
 
       if (ballTouchTopHalfOfPlatformHeight) {
-        this.dy = -this.maxSpeed;
+        this.angle = 5;
+        this.direction = direction.toLeftTop;
       } else {
-        this.dy = this.maxSpeed;
+        this.angle = 90 - this.angle;
+        this.direction = direction.toLeftDown;
       }
+
+      this.getVector();
+    }
+    if (isBallFliesToPlatformOnTheRight && isBallOnTheHeightOfPlatform) {
+      this.x = this.game.platform.x;
+
+      const ballTouchTopHalfOfPlatformHeight =
+        this.y + this.height <
+        this.game.platform.y + this.game.platform.height / 2;
+
+      if (ballTouchTopHalfOfPlatformHeight) {
+        this.angle = 85;
+        this.direction = direction.toRightTop;
+      } else {
+        this.angle = 90 - this.angle;
+        this.direction = direction.toRightDown;
+      }
+
+      this.getVector();
     }
     // collision with blocks
     this.game.field.blocks.forEach((block) => {
@@ -107,7 +180,15 @@ export class Ball {
         this.y < block.y + block.height
       ) {
         this.x = block.x - this.width;
-        this.dx = -this.maxSpeed;
+
+        if (this.direction === direction.toRightTop) {
+          this.direction = direction.toLeftTop;
+        } else if (this.direction === direction.toRightDown) {
+          this.direction = direction.toLeftDown;
+        }
+        this.angle = 90 - this.angle;
+        this.getVector();
+
         block.collisionWithBall();
       } else if (
         this.x - this.dx > block.x + block.width &&
@@ -116,7 +197,15 @@ export class Ball {
         this.y < block.y + block.height
       ) {
         this.x = block.x + block.width;
-        this.dx = this.maxSpeed;
+
+        if (this.direction === direction.toLeftTop) {
+          this.direction = direction.toRightTop;
+        } else if (this.direction === direction.toLeftDown) {
+          this.direction = direction.toRightDown;
+        }
+        this.angle = 90 - this.angle;
+        this.getVector();
+
         block.collisionWithBall();
       } else if (
         this.y + this.height - this.dy < block.y &&
@@ -125,7 +214,15 @@ export class Ball {
         this.x < block.x + block.width
       ) {
         this.y = block.y - this.height;
-        this.dy = -this.maxSpeed;
+
+        if (this.direction === direction.toLeftDown) {
+          this.direction = direction.toLeftTop;
+        } else if (this.direction === direction.toRightDown) {
+          this.direction = direction.toRightTop;
+        }
+        this.angle = 90 - this.angle;
+        this.getVector();
+
         block.collisionWithBall();
       } else if (
         this.y - this.dy > block.y + block.height &&
@@ -134,7 +231,15 @@ export class Ball {
         this.x < block.x + block.width
       ) {
         this.y = block.y + block.height;
-        this.dy = this.maxSpeed;
+
+        if (this.direction === direction.toLeftTop) {
+          this.direction = direction.toLeftDown;
+        } else if (this.direction === direction.toRightTop) {
+          this.direction = direction.toRightDown;
+        }
+        this.angle = 90 - this.angle;
+        this.getVector();
+
         block.collisionWithBall();
       }
     });
@@ -157,7 +262,17 @@ export class Ball {
   reset() {
     this.x = (this.game.width - this.width) / 2;
     this.y = this.game.height - this.game.platform.height - this.height;
-    this.dx = this.maxSpeed;
-    this.dy = -this.maxSpeed;
+    this.angle = 45;
+    this.direction = direction.toRightTop;
+    this.getVector();
+  }
+
+  getVector() {
+    this.dx =
+      -Math.cos((this.angle + this.direction * 90) * (Math.PI / 180)) *
+      this.maxSpeed;
+    this.dy =
+      -Math.sin((this.angle + this.direction * 90) * (Math.PI / 180)) *
+      this.maxSpeed;
   }
 }
