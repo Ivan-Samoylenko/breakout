@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.js": "/breakout/static/js/main.36f5fac0.js",
+    "static/media/background.png": "/breakout/static/media/background.f9c94f9ee849f547b411.png",
+    "static/media/blockT.png": "/breakout/static/media/blockT.5127386d841aaacae6c3.png",
+    "static/media/ball.png": "/breakout/static/media/ball.821834126cb3a32de210.png",
+    "index.html": "/breakout/index.html",
+    "main.36f5fac0.js.map": "/breakout/static/js/main.36f5fac0.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.36f5fac0.js"
+  ]
+}
